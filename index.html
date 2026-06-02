@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRIS — Gestão Técnica com Clareza, Campo e Controle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#5B5BD6;--blue2:#7C3AED;--blue-light:#EEF2FF;--blue-mid:#818CF8;
+  --text:#0F1729;--muted:#64748B;--line:#E2E8F0;--surface:#F8FAFC;--white:#fff;
+  --grad:linear-gradient(135deg,#5B5BD6 0%,#7C3AED 100%);
+  --grad-hero:linear-gradient(135deg,#1E1B4B 0%,#312E81 50%,#4C1D95 100%);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.88);backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s}
+nav.scrolled{border-color:var(--line);box-shadow:0 2px 20px rgba(0,0,0,.06)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-wordmark{font-size:1rem;font-weight:700;letter-spacing:.15em;color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{font-size:.875rem;font-weight:500;color:var(--muted);text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:var(--text)}
+.nav-ctas{display:flex;align-items:center;gap:10px}
+.btn-ghost{padding:9px 20px;border-radius:10px;border:1.5px solid var(--line);background:transparent;font:500 .875rem 'DM Sans',sans-serif;color:var(--text);cursor:pointer;transition:border-color .15s,background .15s}
+.btn-ghost:hover{border-color:var(--blue);background:var(--blue-light)}
+.btn-primary{padding:10px 22px;border-radius:10px;border:none;background:var(--grad);font:600 .875rem 'DM Sans',sans-serif;color:#fff;cursor:pointer;transition:opacity .15s,transform .15s;box-shadow:0 4px 14px rgba(91,91,214,.35)}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 48px 60px;position:relative;overflow:hidden;background:#FAFBFF}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35}
+.hero-blob1{width:600px;height:600px;background:radial-gradient(circle,#C7D2FE,transparent);top:-100px;right:-100px}
+.hero-blob2{width:400px;height:400px;background:radial-gradient(circle,#DDD6FE,transparent);bottom:-80px;left:200px}
+.hero-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:60px;align-items:center;max-width:1200px;margin:0 auto;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;background:var(--blue-light);border:1px solid #C7D2FE;font-size:.75rem;font-weight:600;color:var(--blue);letter-spacing:.04em;margin-bottom:24px}
+.hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero h1{font-size:3.25rem;font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:20px}
+.hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.05rem;color:var(--muted);line-height:1.65;max-width:420px;margin-bottom:36px;font-weight:400}
+.hero-btns{display:flex;align-items:center;gap:14px;margin-bottom:52px}
+.btn-hero{padding:14px 28px;border-radius:12px;border:none;background:var(--grad);font:600 1rem 'DM Sans',sans-serif;color:#fff;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(91,91,214,.4);transition:transform .2s,box-shadow .2s}
+.btn-hero:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(91,91,214,.45)}
+.btn-hero-ghost{padding:14px 28px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font:500 1rem 'DM Sans',sans-serif;color:var(--text);cursor:pointer;transition:border-color .15s,background .15s}
+.btn-hero-ghost:hover{border-color:var(--blue)}
+.hero-perks{display:flex;gap:28px}
+.perk{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.perk-icon{width:44px;height:44px;border-radius:12px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.perk span{font-size:.78rem;font-weight:500;color:var(--muted);max-width:90px;line-height:1.3}
+
+/* ── MOCKUP ── */
+.hero-visual{position:relative;height:520px}
+.mockup-desktop{position:absolute;top:0;left:0;right:60px;background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(15,23,42,.14),0 0 0 1px rgba(0,0,0,.06);overflow:hidden;transform:perspective(1000px) rotateY(-4deg) rotateX(2deg);transition:transform .4s ease}
+.mockup-desktop:hover{transform:perspective(1000px) rotateY(-1deg) rotateX(0deg)}
+.mockup-bar{height:36px;background:#F1F5F9;display:flex;align-items:center;gap:6px;padding:0 14px;border-bottom:1px solid var(--line)}
+.mockup-dot{width:9px;height:9px;border-radius:50%}
+.mockup-body{display:grid;grid-template-columns:140px 1fr;height:340px}
+.mockup-sidebar{background:#fff;border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:6px}
+.mockup-logo-row{display:flex;align-items:center;gap:6px;margin-bottom:12px;padding:0 4px}
+.m-logo-icon{width:22px;height:22px;position:relative}
+.m-logo-ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--blue);animation:irisRotate 8s linear infinite}
+.m-logo-dot{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.m-logo-dot::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--blue)}
+.m-logo-ring::before{content:'';position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:3px;height:3px;border-radius:50%;background:var(--blue)}
+.mockup-logo-row span{font-size:.65rem;font-weight:700;letter-spacing:.12em;color:var(--text)}
+.m-nav-item{padding:7px 10px;border-radius:8px;font-size:.62rem;color:var(--muted);display:flex;align-items:center;gap:7px;cursor:pointer;transition:background .12s}
+.m-nav-item:hover{background:var(--surface)}
+.m-nav-item.active{background:#EEF2FF;color:var(--blue);font-weight:600}
+.m-nav-dot{width:8px;height:8px;border-radius:2px;background:currentColor;opacity:.6;flex-shrink:0}
+.mockup-content{background:var(--surface);padding:16px}
+.mockup-title{font-size:.85rem;font-weight:700;margin-bottom:14px;color:var(--text)}
+.mockup-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.m-kpi{background:#fff;border-radius:8px;padding:10px;border:1px solid var(--line)}
+.m-kpi-label{font-size:.5rem;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+.m-kpi-val{font-size:.85rem;font-weight:700;color:var(--text)}
+.m-kpi-delta{font-size:.48rem;color:#16A34A;margin-top:2px}
+.mockup-bottom{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m-card{background:#fff;border-radius:8px;border:1px solid var(--line);padding:10px;overflow:hidden}
+.m-card-title{font-size:.55rem;font-weight:700;color:var(--text);margin-bottom:8px}
+.m-map{background:linear-gradient(135deg,#E0F2FE,#DBEAFE);border-radius:6px;height:90px;position:relative;overflow:hidden}
+.m-map::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 20h40M20 0v40' stroke='%23BAE6FD' stroke-width='.5'/%3E%3C/svg%3E")}
+.m-pin{position:absolute;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);overflow:hidden;background:#5B5BD6;display:flex;align-items:center;justify-content:center}
+.m-pin-face{width:10px;height:10px;border-radius:50%;background:#C7D2FE}
+.m-os-item{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--line);font-size:.5rem;color:var(--muted)}
+.m-os-item:last-child{border-bottom:none}
+.m-os-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* Mockup celular */
+.mockup-phone{position:absolute;right:-20px;bottom:20px;width:160px;background:#0F172A;border-radius:28px;box-shadow:0 28px 60px rgba(15,23,42,.35),0 0 0 1px rgba(255,255,255,.06);overflow:hidden;transform:perspective(800px) rotateY(4deg);transition:transform .4s}
+.mockup-phone:hover{transform:perspective(800px) rotateY(1deg)}
+.phone-notch{height:24px;background:#0F172A;display:flex;align-items:center;justify-content:center}
+.phone-notch-pill{width:60px;height:6px;background:#1E293B;border-radius:3px}
+.phone-screen{background:#F8FAFC;min-height:300px;padding:12px}
+.phone-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.phone-os-badge{font-size:.55rem;font-weight:700;color:#fff;background:var(--grad);padding:3px 8px;border-radius:999px}
+.phone-tabs{display:flex;gap:4px;margin-bottom:12px;background:#E2E8F0;border-radius:8px;padding:3px}
+.phone-tab{flex:1;padding:4px;border-radius:6px;font-size:.5rem;font-weight:600;text-align:center;cursor:pointer;transition:background .12s,color .12s;color:var(--muted)}
+.phone-tab.active{background:#fff;color:var(--blue)}
+.phone-field{margin-bottom:8px}
+.phone-field-label{font-size:.45rem;color:var(--muted);margin-bottom:2px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.phone-field-val{font-size:.6rem;color:var(--text);font-weight:500}
+.phone-field-sep{height:1px;background:var(--line);margin-bottom:8px}
+.phone-btn-start{width:100%;padding:7px;background:var(--grad);border:none;border-radius:8px;font-size:.6rem;font-weight:700;color:#fff;cursor:pointer;margin-top:10px}
+.phone-nav{height:36px;background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;padding:0 8px}
+.phone-nav-icon{display:flex;flex-direction:column;align-items:center;gap:2px}
+.phone-nav-icon span{font-size:.38rem;color:var(--muted)}
+.phone-nav-icon.active span{color:var(--blue)}
+.phone-nav-dot{width:14px;height:2px;border-radius:2px;background:var(--line)}
+.phone-nav-icon.active .phone-nav-dot{background:var(--blue)}
+
+/* ── LOGOS ── */
+.logos-strip{padding:28px 48px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#FAFBFF}
+.logos-label{text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:20px}
+.logos-row{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
+.logo-item{font-size:.9rem;font-weight:800;color:#94A3B8;letter-spacing:-.01em;display:flex;align-items:center;gap:7px;transition:color .2s}
+.logo-item:hover{color:var(--muted)}
+.logo-item-icon{width:20px;height:20px;border-radius:6px;background:currentColor;opacity:.4;flex-shrink:0}
+
+/* ── FEATURES ── */
+.features{padding:100px 48px;background:#fff}
+.section-header{text-align:center;max-width:600px;margin:0 auto 64px}
+.section-label{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.section-title{font-size:2.5rem;font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:16px}
+.section-title em{font-style:normal;color:var(--blue)}
+.section-sub{font-size:1rem;color:var(--muted);line-height:1.65}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto}
+.feat-card{padding:32px 28px;border-radius:18px;border:1px solid var(--line);background:#fff;transition:transform .2s,box-shadow .2s,border-color .2s;cursor:default}
+.feat-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(91,91,214,.1);border-color:#C7D2FE}
+.feat-icon{width:48px;height:48px;border-radius:14px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px}
+.feat-title{font-size:1rem;font-weight:700;margin-bottom:10px;color:var(--text)}
+.feat-desc{font-size:.875rem;color:var(--muted);line-height:1.65}
+
+/* ── PROBLEMS ── */
+.problems{padding:80px 48px;background:var(--surface)}
+.problems-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:center;max-width:1000px;margin:0 auto}
+.prob-list,.sol-list{display:flex;flex-direction:column;gap:14px}
+.prob-item,.sol-item{display:flex;align-items:center;gap:12px;font-size:.9rem;font-weight:500}
+.prob-icon{width:24px;height:24px;border-radius:50%;background:#FEE2E2;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#DC2626;flex-shrink:0}
+.sol-icon{width:24px;height:24px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#16A34A;flex-shrink:0}
+.prob-item{color:#64748B}
+.sol-item{color:var(--text)}
+.prob-center{display:flex;flex-direction:column;align-items:center;gap:16px}
+.iris-orb{width:90px;height:90px;position:relative;animation:orbFloat 4s ease-in-out infinite}
+@keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.orb-ring{position:absolute;border-radius:50%;border:1.5px solid rgba(91,91,214,.25);animation:irisRotate 10s linear infinite}
+.orb-ring:nth-child(1){inset:0}
+.orb-ring:nth-child(2){inset:12px;border-color:rgba(91,91,214,.35);animation-duration:7s;animation-direction:reverse}
+.orb-ring:nth-child(3){inset:24px;border-color:rgba(91,91,214,.5);animation-duration:5s}
+.orb-ring:nth-child(1)::before,.orb-ring:nth-child(2)::before,.orb-ring:nth-child(3)::before{content:'';position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--blue);opacity:.8}
+.orb-core{position:absolute;inset:30px;border-radius:50%;background:var(--grad);box-shadow:0 0 20px rgba(91,91,214,.4)}
+.center-arrows{display:flex;gap:12px;align-items:center}
+.arr-left{color:#F87171;font-size:1.2rem}
+.arr-right{color:var(--blue);font-size:1.2rem}
+.prob-title,.sol-title{font-size:1rem;font-weight:700;text-align:center}
+.prob-title{color:#EF4444}
+.sol-title{color:var(--blue)}
+
+/* ── SOCIAL PROOF ── */
+.social{padding:80px 48px;background:var(--grad-hero);position:relative;overflow:hidden}
+.social::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(255,255,255,.04)'/%3E%3C/svg%3E")}
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1100px;margin:0 auto;position:relative}
+.social-left h2{font-size:2rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:16px}
+.social-left p{color:rgba(255,255,255,.65);font-size:.9rem;line-height:1.65;margin-bottom:32px}
+.stats-row{display:flex;gap:32px}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stat-num{font-size:2rem;font-weight:800;color:#fff;letter-spacing:-.03em}
+.stat-label{font-size:.75rem;color:rgba(255,255,255,.55);font-weight:500}
+.testimonial-card{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-radius:20px;padding:32px;position:relative}
+.testimonial-card::before{content:'"';font-family:'Instrument Serif',serif;font-size:5rem;color:var(--blue);opacity:.2;position:absolute;top:-8px;left:20px;line-height:1}
+.testimonial-text{font-size:.95rem;line-height:1.7;color:var(--text);margin-bottom:20px;position:relative}
+.testimonial-author{display:flex;align-items:center;gap:12px}
+.author-avatar{width:40px;height:40px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.9rem;flex-shrink:0}
+.author-name{font-size:.875rem;font-weight:700;color:var(--text)}
+.author-role{font-size:.78rem;color:var(--muted)}
+.testimonial-dots{display:flex;gap:6px;justify-content:flex-end;margin-top:16px}
+.t-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:background .2s,width .2s}
+.t-dot.active{background:var(--blue);width:20px;border-radius:3px}
+
+/* ── PRICING ── */
+.pricing{padding:100px 48px;background:#fff}
+.pricing-toggle{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:48px}
+.toggle-label{font-size:.875rem;font-weight:500;color:var(--muted)}
+.toggle-track{width:44px;height:24px;background:#E2E8F0;border-radius:12px;position:relative;cursor:pointer;transition:background .2s}
+.toggle-track.active{background:var(--blue)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle-track.active .toggle-thumb{transform:translateX(20px)}
+.toggle-badge{background:#DCFCE7;color:#15803D;font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:999px}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto}
+.plan-card{border:1.5px solid var(--line);border-radius:20px;padding:32px;position:relative;transition:transform .2s,box-shadow .2s}
+.plan-card:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(91,91,214,.1)}
+.plan-card.featured{border-color:var(--blue);box-shadow:0 0 0 4px rgba(91,91,214,.08)}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--grad);color:#fff;font-size:.7rem;font-weight:700;padding:4px 14px;border-radius:999px;white-space:nowrap}
+.plan-icon{font-size:1.6rem;margin-bottom:12px}
+.plan-name{font-size:1.05rem;font-weight:700;margin-bottom:4px}
+.plan-users{font-size:.8rem;color:var(--muted);margin-bottom:20px}
+.plan-price{display:flex;align-items:flex-end;gap:4px;margin-bottom:6px}
+.plan-currency{font-size:.9rem;font-weight:600;color:var(--text);line-height:2}
+.plan-amount{font-size:2.4rem;font-weight:800;color:var(--text);letter-spacing:-.04em;line-height:1}
+.plan-period{font-size:.8rem;color:var(--muted);line-height:2.2}
+.plan-billing{font-size:.75rem;color:var(--muted);margin-bottom:24px}
+.plan-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.plan-feat{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--text)}
+.plan-check{width:18px;height:18px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#16A34A;flex-shrink:0}
+.plan-btn{width:100%;padding:13px;border-radius:12px;font:600 .9rem 'DM Sans',sans-serif;cursor:pointer;transition:all .2s}
+.plan-btn-outline{border:1.5px solid var(--line);background:#fff;color:var(--text)}
+.plan-btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+.plan-btn-solid{border:none;background:var(--grad);color:#fff;box-shadow:0 4px 14px rgba(91,91,214,.35)}
+.plan-btn-solid:hover{opacity:.9;transform:translateY(-1px)}
+
+/* ── CTA ── */
+.cta-section{padding:80px 48px;background:var(--surface)}
+.cta-box{max-width:800px;margin:0 auto;text-align:center}
+.cta-box h2{font-size:2.5rem;font-weight:700;letter-spacing:-.03em;margin-bottom:12px}
+.cta-box p{font-size:1rem;color:var(--muted);margin-bottom:36px}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:48px}
+.cta-perks{display:flex;justify-content:center;gap:40px}
+.cta-perk{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted)}
+.cta-perk-icon{font-size:1.1rem}
+
+/* ── FOOTER ── */
+footer{background:#fff;border-top:1px solid var(--line);padding:64px 48px 32px}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.2fr;gap:48px;margin-bottom:48px;max-width:1200px;margin-left:auto;margin-right:auto}
+.footer-brand p{font-size:.85rem;color:var(--muted);margin:14px 0 20px;line-height:1.65;max-width:220px}
+.social-icons{display:flex;gap:10px}
+.social-icon{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s}
+.social-icon:hover{border-color:var(--blue);color:var(--blue)}
+.footer-col h4{font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text);margin-bottom:16px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col a{font-size:.875rem;color:var(--muted);text-decoration:none;transition:color .15s}
+.footer-col a:hover{color:var(--blue)}
+.contact-item{display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--muted);margin-bottom:10px}
+.contact-item-icon{font-size:.9rem}
+.footer-bottom{border-top:1px solid var(--line);padding-top:24px;text-align:center;font-size:.8rem;color:var(--muted);max-width:1200px;margin:0 auto}
+
+
+.iris-spin{animation:irisSpin 12s linear infinite}
+@keyframes irisSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* ── ANIMATE ON SCROLL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── PHONE INTERACTION ── */
+#phoneScreen{cursor:pointer}
+.phone-screen-state{transition:opacity .3s}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36" style="flex-shrink:0"><defs><linearGradient id="rgn" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient><linearGradient id="cgn" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#38BDF8"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient></defs><g class="iris-spin" style="transform-origin:18.0px 18.0px"><line x1="18.000" y1="13.680" x2="18.000" y2="3.960" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="18.961" y1="13.788" x2="21.124" y2="4.312" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="19.874" y1="14.108" x2="24.092" y2="5.350" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="20.693" y1="14.622" x2="26.754" y2="7.023" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="21.378" y1="15.307" x2="28.977" y2="9.246" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="21.892" y1="16.126" x2="30.650" y2="11.908" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="22.212" y1="17.039" x2="31.688" y2="14.876" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="22.320" y1="18.000" x2="32.040" y2="18.000" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="22.212" y1="18.961" x2="31.688" y2="21.124" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="21.892" y1="19.874" x2="30.650" y2="24.092" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="21.378" y1="20.693" x2="28.977" y2="26.754" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="20.693" y1="21.378" x2="26.754" y2="28.977" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="19.874" y1="21.892" x2="24.092" y2="30.650" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="18.961" y1="22.212" x2="21.124" y2="31.688" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="18.000" y1="22.320" x2="18.000" y2="32.040" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="17.039" y1="22.212" x2="14.876" y2="31.688" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="16.126" y1="21.892" x2="11.908" y2="30.650" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="15.307" y1="21.378" x2="9.246" y2="28.977" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="14.622" y1="20.693" x2="7.023" y2="26.754" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="14.108" y1="19.874" x2="5.350" y2="24.092" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="13.788" y1="18.961" x2="4.312" y2="21.124" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="13.680" y1="18.000" x2="3.960" y2="18.000" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="13.788" y1="17.039" x2="4.312" y2="14.876" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="14.108" y1="16.126" x2="5.350" y2="11.908" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="14.622" y1="15.307" x2="7.023" y2="9.246" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="15.307" y1="14.622" x2="9.246" y2="7.023" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="16.126" y1="14.108" x2="11.908" y2="5.350" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/><line x1="17.039" y1="13.788" x2="14.876" y2="4.312" stroke="url(#rgn)" stroke-width="1.872" stroke-linecap="round"/></g><circle cx="18.0" cy="18.0" r="16.560" fill="none" stroke="url(#cgn)" stroke-width="2.340"/></svg>
+    <span class="nav-wordmark">IRIS</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Soluções</a></li>
+    <li><a href="#features">Funcionalidades</a></li>
+    <li><a href="#pricing">Preços</a></li>
+    <li><a href="#footer">Sobre</a></li>
+    <li><a href="#footer">Contato</a></li>
+  </ul>
+  <div class="nav-ctas">
+    <button class="btn-ghost">Entrar</button>
+    <button class="btn-primary">Solicitar demonstração</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-blob hero-blob1"></div>
+    <div class="hero-blob hero-blob2"></div>
+  </div>
+  <div class="hero-grid">
+    <div class="hero-left reveal">
+      <div style="margin-bottom:28px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" width="52" height="52" style="flex-shrink:0"><defs><linearGradient id="rgh" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient><linearGradient id="cgh" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#38BDF8"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient></defs><g class="iris-spin" style="transform-origin:26.0px 26.0px"><line x1="26.000" y1="19.760" x2="26.000" y2="5.720" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="27.389" y1="19.916" x2="30.513" y2="6.228" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="28.707" y1="20.378" x2="34.799" y2="7.728" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="29.891" y1="21.121" x2="38.644" y2="10.144" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="30.879" y1="22.109" x2="41.856" y2="13.356" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="31.622" y1="23.293" x2="44.272" y2="17.201" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="32.084" y1="24.611" x2="45.772" y2="21.487" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="32.240" y1="26.000" x2="46.280" y2="26.000" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="32.084" y1="27.389" x2="45.772" y2="30.513" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="31.622" y1="28.707" x2="44.272" y2="34.799" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="30.879" y1="29.891" x2="41.856" y2="38.644" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="29.891" y1="30.879" x2="38.644" y2="41.856" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="28.707" y1="31.622" x2="34.799" y2="44.272" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="27.389" y1="32.084" x2="30.513" y2="45.772" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="26.000" y1="32.240" x2="26.000" y2="46.280" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="24.611" y1="32.084" x2="21.487" y2="45.772" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="23.293" y1="31.622" x2="17.201" y2="44.272" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="22.109" y1="30.879" x2="13.356" y2="41.856" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="21.121" y1="29.891" x2="10.144" y2="38.644" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="20.378" y1="28.707" x2="7.728" y2="34.799" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="19.916" y1="27.389" x2="6.228" y2="30.513" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="19.760" y1="26.000" x2="5.720" y2="26.000" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="19.916" y1="24.611" x2="6.228" y2="21.487" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="20.378" y1="23.293" x2="7.728" y2="17.201" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="21.121" y1="22.109" x2="10.144" y2="13.356" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="22.109" y1="21.121" x2="13.356" y2="10.144" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="23.293" y1="20.378" x2="17.201" y2="7.728" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/><line x1="24.611" y1="19.916" x2="21.487" y2="6.228" stroke="url(#rgh)" stroke-width="2.704" stroke-linecap="round"/></g><circle cx="26.0" cy="26.0" r="23.920" fill="none" stroke="url(#cgh)" stroke-width="3.380"/></svg></div>
+      <div class="hero-badge"><span></span> PLATAFORMA COMPLETA</div>
+      <h1>Gestão técnica com<br><em>clareza, campo<br>e controle.</em></h1>
+      <p class="hero-sub">O IRIS centraliza ordens de serviço, equipes, estoque, financeiro e relatórios em uma única plataforma completa e fácil de usar.</p>
+      <div class="hero-btns">
+        <button class="btn-hero">Solicitar demonstração →</button>
+        <button class="btn-hero-ghost">Conhecer funcionalidades</button>
+      </div>
+      <div class="hero-perks">
+        <div class="perk">
+          <div class="perk-icon">📱</div>
+          <span>App do técnico offline e online</span>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">📍</div>
+          <span>Acompanhamento em tempo real</span>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🔒</div>
+          <span>Dados seguros e protegidos</span>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">📊</div>
+          <span>Relatórios inteligentes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal" style="transition-delay:.15s">
+      <!-- Desktop mockup -->
+      <div class="mockup-desktop">
+        <div class="mockup-bar">
+          <div class="mockup-dot" style="background:#FF5F57"></div>
+          <div class="mockup-dot" style="background:#FEBC2E"></div>
+          <div class="mockup-dot" style="background:#28C840"></div>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-sidebar">
+            <div class="mockup-logo-row">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="18" height="18" style="flex-shrink:0"><defs><linearGradient id="rgm" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient><linearGradient id="cgm" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#38BDF8"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient></defs><g><line x1="9.000" y1="6.840" x2="9.000" y2="1.980" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="9.481" y1="6.894" x2="10.562" y2="2.156" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="9.937" y1="7.054" x2="12.046" y2="2.675" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="10.347" y1="7.311" x2="13.377" y2="3.512" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="10.689" y1="7.653" x2="14.488" y2="4.623" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="10.946" y1="8.063" x2="15.325" y2="5.954" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="11.106" y1="8.519" x2="15.844" y2="7.438" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="11.160" y1="9.000" x2="16.020" y2="9.000" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="11.106" y1="9.481" x2="15.844" y2="10.562" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="10.946" y1="9.937" x2="15.325" y2="12.046" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="10.689" y1="10.347" x2="14.488" y2="13.377" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="10.347" y1="10.689" x2="13.377" y2="14.488" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="9.937" y1="10.946" x2="12.046" y2="15.325" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="9.481" y1="11.106" x2="10.562" y2="15.844" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="9.000" y1="11.160" x2="9.000" y2="16.020" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="8.519" y1="11.106" x2="7.438" y2="15.844" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="8.063" y1="10.946" x2="5.954" y2="15.325" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="7.653" y1="10.689" x2="4.623" y2="14.488" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="7.311" y1="10.347" x2="3.512" y2="13.377" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="7.054" y1="9.937" x2="2.675" y2="12.046" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="6.894" y1="9.481" x2="2.156" y2="10.562" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="6.840" y1="9.000" x2="1.980" y2="9.000" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="6.894" y1="8.519" x2="2.156" y2="7.438" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="7.054" y1="8.063" x2="2.675" y2="5.954" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="7.311" y1="7.653" x2="3.512" y2="4.623" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="7.653" y1="7.311" x2="4.623" y2="3.512" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="8.063" y1="7.054" x2="5.954" y2="2.675" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/><line x1="8.519" y1="6.894" x2="7.438" y2="2.156" stroke="url(#rgm)" stroke-width="0.936" stroke-linecap="round"/></g><circle cx="9.0" cy="9.0" r="8.280" fill="none" stroke="url(#cgm)" stroke-width="1.170"/></svg>
+              <span>IRIS</span>
+            </div>
+            <div class="m-nav-item active"><div class="m-nav-dot"></div>Dashboard</div>
+            <div class="m-nav-item"><div class="m-nav-dot"></div>Ordens de Serviço</div>
+            <div class="m-nav-item"><div class="m-nav-dot"></div>Técnicos</div>
+            <div class="m-nav-item"><div class="m-nav-dot"></div>Clientes</div>
+            <div class="m-nav-item"><div class="m-nav-dot"></div>Estoque</div>
+            <div class="m-nav-item"><div class="m-nav-dot"></div>Financeiro</div>
+            <div class="m-nav-item"><div class="m-nav-dot"></div>Relatórios</div>
+          </div>
+          <div class="mockup-content">
+            <div class="mockup-title">Dashboard</div>
+            <div class="mockup-kpis">
+              <div class="m-kpi"><div class="m-kpi-label">Ordens</div><div class="m-kpi-val">128</div><div class="m-kpi-delta">▲ 12%</div></div>
+              <div class="m-kpi"><div class="m-kpi-label">Andamento</div><div class="m-kpi-val">32</div><div class="m-kpi-delta">▲ 8%</div></div>
+              <div class="m-kpi"><div class="m-kpi-label">Concluídas</div><div class="m-kpi-val">96</div><div class="m-kpi-delta">▲ 10%</div></div>
+              <div class="m-kpi"><div class="m-kpi-label">Receita</div><div class="m-kpi-val" style="font-size:.65rem">R$48.750</div><div class="m-kpi-delta">▲ 22%</div></div>
+            </div>
+            <div class="mockup-bottom">
+              <div class="m-card">
+                <div class="m-card-title">Técnicos em campo</div>
+                <div class="m-map">
+                  <div class="m-pin" style="top:30%;left:35%"><div class="m-pin-face"></div></div>
+                  <div class="m-pin" style="top:55%;left:55%;background:#7C3AED"><div class="m-pin-face"></div></div>
+                  <div class="m-pin" style="top:45%;left:25%;background:#059669"><div class="m-pin-face"></div></div>
+                  <div class="m-pin" style="top:65%;left:70%;background:#D97706"><div class="m-pin-face"></div></div>
+                </div>
+              </div>
+              <div class="m-card">
+                <div class="m-card-title">Ordens recentes</div>
+                <div class="m-os-item"><div class="m-os-dot" style="background:#EF4444"></div>OS #1247 · Inst. de bomba</div>
+                <div class="m-os-item"><div class="m-os-dot" style="background:#F59E0B"></div>OS #1246 · Manutenção prev.</div>
+                <div class="m-os-item"><div class="m-os-dot" style="background:#3B82F6"></div>OS #1245 · Troca equip.</div>
+                <div class="m-os-item"><div class="m-os-dot" style="background:#10B981"></div>OS #1244 · Visita técnica</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone mockup interativo -->
+      <div class="mockup-phone" id="phoneScreen" title="Clique para interagir">
+        <div class="phone-notch"><div class="phone-notch-pill"></div></div>
+        <div class="phone-screen">
+          <div id="phoneState0">
+            <div class="phone-header">
+              <span style="font-size:.65rem;font-weight:700;color:var(--text)">OS #1247</span>
+              <div class="phone-os-badge">Em andamento</div>
+            </div>
+            <div class="phone-tabs">
+              <div class="phone-tab active">Detalhes</div>
+              <div class="phone-tab">Atividades</div>
+            </div>
+            <div class="phone-field"><div class="phone-field-label">Cliente</div><div class="phone-field-val">Condomínio Solar</div></div>
+            <div class="phone-field-sep"></div>
+            <div class="phone-field"><div class="phone-field-label">Serviço</div><div class="phone-field-val">Instalação de bomba</div></div>
+            <div class="phone-field-sep"></div>
+            <div class="phone-field"><div class="phone-field-label">Endereço</div><div class="phone-field-val">Rua das Flores, 123<br>Centro · SP</div></div>
+            <button class="phone-btn-start" onclick="nextPhoneState()">Iniciar atendimento ▶</button>
+          </div>
+          <div id="phoneState1" style="display:none">
+            <div class="phone-header">
+              <span style="font-size:.65rem;font-weight:700;color:var(--text)">OS #1247</span>
+              <div class="phone-os-badge">Executando</div>
+            </div>
+            <div class="phone-tabs">
+              <div class="phone-tab">Detalhes</div>
+              <div class="phone-tab active">Atividades</div>
+            </div>
+            <div class="phone-field" style="margin-bottom:6px">
+              <div style="font-size:.5rem;color:#16A34A;font-weight:700;margin-bottom:4px">✓ Atendimento iniciado · 09:14</div>
+              <div style="font-size:.5rem;color:var(--muted)">Registro automático de localização</div>
+            </div>
+            <div class="phone-field-sep"></div>
+            <div class="phone-field"><div class="phone-field-label">Observações</div></div>
+            <div style="background:#F8FAFC;border:1px solid var(--line);border-radius:8px;padding:8px;font-size:.55rem;color:var(--muted);min-height:40px">Adicione fotos e notas...</div>
+            <button class="phone-btn-start" style="background:linear-gradient(135deg,#059669,#047857)" onclick="nextPhoneState()">Finalizar OS ✓</button>
+          </div>
+          <div id="phoneState2" style="display:none">
+            <div style="text-align:center;padding:20px 0">
+              <div style="font-size:2rem;margin-bottom:10px">✅</div>
+              <div style="font-size:.75rem;font-weight:700;color:#15803D;margin-bottom:6px">OS Finalizada!</div>
+              <div style="font-size:.6rem;color:var(--muted);margin-bottom:16px">Relatório enviado automaticamente</div>
+              <button class="phone-btn-start" style="background:var(--grad)" onclick="nextPhoneState()">Próxima OS →</button>
+            </div>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <div class="phone-nav-icon active"><div class="phone-nav-dot"></div><span>Início</span></div>
+          <div class="phone-nav-icon"><div class="phone-nav-dot"></div><span>OS</span></div>
+          <div class="phone-nav-icon"><div class="phone-nav-dot"></div><span>Chat</span></div>
+          <div class="phone-nav-icon"><div class="phone-nav-dot"></div><span>Perfil</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos-strip reveal">
+  <div class="logos-label">Confiam em nossa plataforma</div>
+  <div class="logos-row">
+    <div class="logo-item"><div class="logo-item-icon"></div>HIDRO SOLUTIONS</div>
+    <div class="logo-item"><div class="logo-item-icon"></div>ÁGUAS BRASIL</div>
+    <div class="logo-item"><div class="logo-item-icon"></div>SANEATEC</div>
+    <div class="logo-item"><div class="logo-item-icon"></div>FLUXO SERVIÇOS</div>
+    <div class="logo-item"><div class="logo-item-icon"></div>PURA ENGENHARIA</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-header reveal">
+    <span class="section-label">Módulos</span>
+    <h2 class="section-title">Tudo que sua operação precisa,<br>em <em>um só lugar</em></h2>
+    <p class="section-sub">Do planejamento à execução em campo, o IRIS conecta pessoas, processos e informações para sua empresa funcionar melhor.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card reveal">
+      <div class="feat-icon">📱</div>
+      <div class="feat-title">Aplicativo do Técnico</div>
+      <div class="feat-desc">Recebe e executa ordens de serviço, envia fotos, registra materiais e dados mesmo offline.</div>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.05s">
+      <div class="feat-icon">📍</div>
+      <div class="feat-title">Gestão de Campo</div>
+      <div class="feat-desc">Acompanhe sua equipe em tempo real no mapa, visualize status e aumente a produtividade.</div>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.1s">
+      <div class="feat-icon">📦</div>
+      <div class="feat-title">Estoque Inteligente</div>
+      <div class="feat-desc">Controle peças, bombas e materiais com entradas, saídas e histórico completo.</div>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.15s">
+      <div class="feat-icon">💰</div>
+      <div class="feat-title">Financeiro Completo</div>
+      <div class="feat-desc">Receitas, despesas, contas a pagar e receber com relatórios claros e precisos.</div>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.2s">
+      <div class="feat-icon">📊</div>
+      <div class="feat-title">Relatórios Inteligentes</div>
+      <div class="feat-desc">Dashboards e relatórios personalizados para decisões rápidas e estratégicas.</div>
+    </div>
+    <div class="feat-card reveal" style="transition-delay:.25s">
+      <div class="feat-icon">⚡</div>
+      <div class="feat-title">Automação e Alertas</div>
+      <div class="feat-desc">Configure notificações automáticas, vencimentos e alertas para nunca perder nada.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMS vs SOLUTIONS -->
+<section class="problems">
+  <div class="problems-grid">
+    <div class="reveal">
+      <div class="prob-title" style="margin-bottom:20px">Chega de problemas<br>que atrasam sua operação</div>
+      <div class="prob-list">
+        <div class="prob-item"><div class="prob-icon">✕</div>Ordens de serviço perdidas</div>
+        <div class="prob-item"><div class="prob-icon">✕</div>Fotos e informações espalhadas</div>
+        <div class="prob-item"><div class="prob-icon">✕</div>Falta de controle de estoque</div>
+        <div class="prob-item"><div class="prob-icon">✕</div>Técnicos sem acompanhamento</div>
+        <div class="prob-item"><div class="prob-icon">✕</div>Relatórios demorados e imprecisos</div>
+      </div>
+    </div>
+    <div class="prob-center reveal" style="transition-delay:.1s">
+      <div class="iris-orb">
+        <div class="orb-ring"></div>
+        <div class="orb-ring"></div>
+        <div class="orb-ring"></div>
+        <div class="orb-core"></div>
+      </div>
+      <div class="center-arrows">
+        <span class="arr-left">←</span>
+        <span style="font-size:.7rem;font-weight:700;color:var(--muted)">IRIS</span>
+        <span class="arr-right">→</span>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.15s">
+      <div class="sol-title" style="margin-bottom:20px">Com o IRIS, tudo<br>fica sob controle</div>
+      <div class="sol-list">
+        <div class="sol-item"><div class="sol-icon">✓</div>Ordens centralizadas e organizadas</div>
+        <div class="sol-item"><div class="sol-icon">✓</div>Fotos e dados no lugar certo</div>
+        <div class="sol-item"><div class="sol-icon">✓</div>Estoque sempre atualizado</div>
+        <div class="sol-item"><div class="sol-icon">✓</div>Equipe conectada e acompanhada</div>
+        <div class="sol-item"><div class="sol-icon">✓</div>Relatórios rápidos e confiáveis</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="social">
+  <div class="social-grid">
+    <div class="reveal">
+      <h2>Mais produtividade, menos retrabalho, resultados que você vê.</h2>
+      <p>Empresas que usam o IRIS ganham tempo, reduzem custos e aumentam a satisfação dos clientes.</p>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-num">+35%</div><div class="stat-label">Produtividade da equipe</div></div>
+        <div class="stat"><div class="stat-num">-28%</div><div class="stat-label">Custos operacionais</div></div>
+        <div class="stat"><div class="stat-num">+98%</div><div class="stat-label">Satisfação dos clientes</div></div>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.1s">
+      <div class="testimonial-card">
+        <div class="testimonial-text">O IRIS transformou nossa operação. Hoje temos controle total do campo ao financeiro em um único sistema. Recomendo!</div>
+        <div class="testimonial-author">
+          <div class="author-avatar">CM</div>
+          <div>
+            <div class="author-name">Carlos Mendes</div>
+            <div class="author-role">Diretor Operacional · Hidro Solutions</div>
+          </div>
+        </div>
+        <div class="testimonial-dots">
+          <div class="t-dot active"></div>
+          <div class="t-dot"></div>
+          <div class="t-dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="section-header reveal">
+    <span class="section-label">Planos</span>
+    <h2 class="section-title">Planos que se adaptam<br>ao seu negócio</h2>
+  </div>
+  <div class="pricing-toggle reveal">
+    <span class="toggle-label">Mensal</span>
+    <div class="toggle-track active" id="billingToggle" onclick="toggleBilling()">
+      <div class="toggle-thumb"></div>
+    </div>
+    <span class="toggle-label">Anual</span>
+    <span class="toggle-badge">10% OFF</span>
+  </div>
+  <div class="plans-grid">
+    <div class="plan-card reveal">
+      <div class="plan-icon">🚀</div>
+      <div class="plan-name">Starter</div>
+      <div class="plan-users">Até 2 usuários</div>
+      <div class="plan-price">
+        <span class="plan-currency">R$</span>
+        <span class="plan-amount" id="price1">89</span>
+        <span class="plan-period">/mês</span>
+      </div>
+      <div class="plan-billing" id="billing1">Cobrança anual</div>
+      <div class="plan-features">
+        <div class="plan-feat"><div class="plan-check">✓</div>Ordens de serviço limitadas</div>
+        <div class="plan-feat"><div class="plan-check">✓</div>Aplicativo do técnico</div>
+        <div class="plan-feat"><div class="plan-check">✓</div>Estoque básico</div>
+        <div class="plan-feat"><div class="plan-check">✓</div>Relatórios padrão</div>
+      </div>
+      <button class="plan-btn plan-btn-outline">Começar agora</button>
+    </div>
+    <div class="plan-card featured reveal" style="transition-delay:.05s">
+      <div class="plan-badge">⭐ Mais escolhido</div>
+      <div class="plan-icon">⚡</div>
+      <div class="plan-name">Profissional</div>
+      <div class="plan-users">Até 10 usuários</div>
+      <div class="plan-price">
+        <span class="plan-currency">R$</span>
+        <span class="plan-amount" id="price2">199</span>
+        <span class="plan-period">/mês</span>
+      </div>
+      <div class="plan-billing" id="billing2">Cobrança anual</div>
+      <div class="plan-features">
+        <div class="plan-feat"><div class="plan-check">✓</div>Tudo do plano Starter</div>
+        <div class="plan-feat"><div class="plan-check">✓</div>Gestão de campo em tempo real</div>
+        <div class="plan-feat"><div class="plan-check">✓</div>Financeiro completo</div>
+        <div class="plan-feat"><div class="plan-check">✓</div>Relatórios personalizados</div>
+      </div>
+      <button class="plan-btn plan-btn-solid">Começar agora</button>
+    </div>
+    <div class="plan-card reveal" style="transition-delay:.1s">
+      <div class="plan-icon">🏢</div>
+      <div class="plan-name">Empresarial</div>
+      <div class="plan-users">Usuários ilimitados</div>
+      <div class="plan-price">
+        <span class="plan-currency">R$</span>
+        <span class="plan-amount" id="price3">399</span>
+        <span class="plan-period">/mês</span>
+      </div>
+      <div class="plan-billing" id="billing3">Cobrança anual</div>
+      <div class="plan-features">
+        <div class="plan-feat"><div class="plan-check">✓</div>Tudo do plano Profissional</div>
+        <div class="plan-feat"><div class="plan-check">✓</div>IA e automação</div>
+        <div class="plan-feat"><div class="plan-check">✓</div>Integrações avançadas</div>
+        <div class="plan-feat"><div class="plan-check">✓</div>Suporte prioritário</div>
+      </div>
+      <button class="plan-btn plan-btn-outline">Falar com especialista</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-box reveal">
+    <h2>Pronto para transformar<br>sua gestão?</h2>
+    <p>Solicite uma demonstração e veja o IRIS na prática.</p>
+    <div class="cta-btns">
+      <button class="btn-hero">Solicitar demonstração →</button>
+      <button class="btn-hero-ghost">Falar com especialista 💬</button>
+    </div>
+    <div class="cta-perks">
+      <div class="cta-perk"><span class="cta-perk-icon">🚀</span>Implantação rápida</div>
+      <div class="cta-perk"><span class="cta-perk-icon">⚡</span>Suporte especializado</div>
+      <div class="cta-perk"><span class="cta-perk-icon">💼</span>Plano flexível para seu negócio</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="margin-bottom:0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" width="28" height="28" style="flex-shrink:0"><defs><linearGradient id="rgf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient><linearGradient id="cgf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#38BDF8"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient></defs><g class="iris-spin" style="transform-origin:14.0px 14.0px"><line x1="14.000" y1="10.640" x2="14.000" y2="3.080" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="14.748" y1="10.724" x2="16.430" y2="3.354" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="15.458" y1="10.973" x2="18.738" y2="4.161" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="16.095" y1="11.373" x2="20.809" y2="5.462" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="16.627" y1="11.905" x2="22.538" y2="7.191" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="17.027" y1="12.542" x2="23.839" y2="9.262" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="17.276" y1="13.252" x2="24.646" y2="11.570" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="17.360" y1="14.000" x2="24.920" y2="14.000" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="17.276" y1="14.748" x2="24.646" y2="16.430" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="17.027" y1="15.458" x2="23.839" y2="18.738" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="16.627" y1="16.095" x2="22.538" y2="20.809" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="16.095" y1="16.627" x2="20.809" y2="22.538" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="15.458" y1="17.027" x2="18.738" y2="23.839" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="14.748" y1="17.276" x2="16.430" y2="24.646" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="14.000" y1="17.360" x2="14.000" y2="24.920" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="13.252" y1="17.276" x2="11.570" y2="24.646" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="12.542" y1="17.027" x2="9.262" y2="23.839" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="11.905" y1="16.627" x2="7.191" y2="22.538" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="11.373" y1="16.095" x2="5.462" y2="20.809" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="10.973" y1="15.458" x2="4.161" y2="18.738" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="10.724" y1="14.748" x2="3.354" y2="16.430" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="10.640" y1="14.000" x2="3.080" y2="14.000" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="10.724" y1="13.252" x2="3.354" y2="11.570" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="10.973" y1="12.542" x2="4.161" y2="9.262" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="11.373" y1="11.905" x2="5.462" y2="7.191" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="11.905" y1="11.373" x2="7.191" y2="5.462" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="12.542" y1="10.973" x2="9.262" y2="4.161" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/><line x1="13.252" y1="10.724" x2="11.570" y2="3.354" stroke="url(#rgf)" stroke-width="1.456" stroke-linecap="round"/></g><circle cx="14.0" cy="14.0" r="12.880" fill="none" stroke="url(#cgf)" stroke-width="1.820"/></svg>
+        <span class="nav-wordmark">IRIS</span>
+      </a>
+      <p>Plataforma completa para gestão técnica, equipes de campo e operações inteligentes.</p>
+      <div class="social-icons">
+        <div class="social-icon">f</div>
+        <div class="social-icon">in</div>
+        <div class="social-icon">▶</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Soluções</h4>
+      <ul>
+        <li><a href="#">Gestão de Campo</a></li>
+        <li><a href="#">Ordens de Serviço</a></li>
+        <li><a href="#">Estoque</a></li>
+        <li><a href="#">Financeiro</a></li>
+        <li><a href="#">Relatórios</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <ul>
+        <li><a href="#">Sobre o IRIS</a></li>
+        <li><a href="#">Cases</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contato</a></li>
+        <li><a href="#">Trabalhe conosco</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Suporte</h4>
+      <ul>
+        <li><a href="#">Central de Ajuda</a></li>
+        <li><a href="#">Documentação</a></li>
+        <li><a href="#">Treinamentos</a></li>
+        <li><a href="#">Status do Sistema</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Fale conosco</h4>
+      <div class="contact-item"><span class="contact-item-icon">✉</span>comercial@irisgestao.com.br</div>
+      <div class="contact-item"><span class="contact-item-icon">📞</span>(11) 99999-9999</div>
+      <div class="contact-item"><span class="contact-item-icon">🕐</span>Segunda a Sexta, 8h às 18h</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 IRIS. Todos os direitos reservados.</div>
+</footer>
+
+<script>
+// Nav scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>20);
+});
+
+// Reveal on scroll
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Phone states
+let phoneState = 0;
+function nextPhoneState(){
+  document.getElementById('phoneState'+phoneState).style.display='none';
+  phoneState = (phoneState+1)%3;
+  document.getElementById('phoneState'+phoneState).style.display='block';
+}
+
+// Billing toggle
+let isAnnual = true;
+const prices = {annual:[89,199,399], monthly:[99,221,443]};
+function toggleBilling(){
+  isAnnual = !isAnnual;
+  const t = document.getElementById('billingToggle');
+  t.classList.toggle('active', isAnnual);
+  const p = isAnnual ? prices.annual : prices.monthly;
+  const label = isAnnual ? 'Cobrança anual' : 'Cobrança mensal';
+  [1,2,3].forEach(i=>{
+    document.getElementById('price'+i).textContent = p[i-1];
+    document.getElementById('billing'+i).textContent = label;
+  });
+}
+
+// Testimonial dots
+document.querySelectorAll('.t-dot').forEach((dot,i)=>{
+  dot.addEventListener('click',()=>{
+    document.querySelectorAll('.t-dot').forEach(d=>d.classList.remove('active'));
+    dot.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
